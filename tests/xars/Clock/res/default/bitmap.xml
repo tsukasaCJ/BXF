@@ -1,0 +1,9 @@
+<XLUE>
+	<resource>
+		<bitmap id="clock" image="bitmap\clock.png"/>
+		<bitmap id="clock_dot" image="bitmap\dot.png"/>
+		<bitmap id="clock_h" image="bitmap\h.png"/>
+		<bitmap id="clock_m" image="bitmap\m.png"/>
+		<bitmap id="clock_s" image="bitmap\s.png"/>
+	</resource>
+</XLUE>

@@ -14,8 +14,7 @@
 #include "./IconResource/IconResRegister.h"
 #include "./HostWndIconObject/HostWndIconObjectRegister.h"
 #include "./RotateObject/RotateObjectRegister.h"
-#include "./DirtyRectObject/DirtyRectObjectRegister.h"
-#include "./NotifyIconObject/NotifyIconObjectRegister.h"
+#include "./Illumination/IlluminationObjectRegister.h"
 
 BOOL APIENTRY DllMain( HANDLE /*hModule*/, 
                        DWORD  /*ul_reason_for_call*/, 
@@ -71,13 +70,17 @@ BOOL XLUE_STDCALL XLUE_RegisterObj( const char* lpCategory, const char* lpObjCla
 	{
 		ret = RotateObjectRegister::RegisterRotateObject();
 	}
-	else if (strcmp(lpObjClass, EXTCLASSNAME_DIRTYRECTOBJECT) == 0)
+	else if (strcmp(lpObjClass, EXTCLASSNAME_ILLUMINATIONSESSIONOBJECT) == 0)
 	{
-		ret = DirtyRectObjectRegister::RegisterDirtyRectObject();
+		ret = IlluminationObjectRegiter::RegiterIlluminationSessionObject();
 	}
-	else if (strcmp(lpObjClass, EXTCLASSNAME_NOTIFYICONOBJECT) == 0)
+	else if(strcmp(lpObjClass, EXTCLASSNAME_ILLUMINATIONLAYEROBJECT) == 0)
 	{
-		ret = NotifyIconObjectRegister::RegisterNotifyIconObject();
+		ret = IlluminationObjectRegiter::RegiterIlluminationLayerObject();
+	}
+	else if(strcmp(lpObjClass, EXTCLASSNAME_ILLUMINANTOBJECT) == 0)
+	{
+		ret = IlluminationObjectRegiter::RegiterIlluminantObject();
 	}
 	else
 	{

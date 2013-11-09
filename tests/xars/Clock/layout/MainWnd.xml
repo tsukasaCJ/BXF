@@ -1,0 +1,241 @@
+<!--XML最好存储为UTF-8编码-->
+<xlue>
+
+<control class="ClockHands">
+	<attr_def>
+		<attr name="Angel" type="string"/>
+		<attr name="Image" type="string"/>
+		<attr name="LayerHeight" type="int" />
+	</attr_def>
+	<method_def>
+		<SetAngel>
+			local arg = {...}
+			local self = arg[1]
+			local angel = arg[2]
+			
+			local rotateObj = self:GetObject("rotate")
+			rotateObj:SetAngel(angel)
+		</SetAngel>
+	</method_def>
+	<objtemplate>
+		<children>
+			<obj class="LayerObject">
+				<attr>
+					<width>father.width</width>
+					<height>father.height</height>
+					<clipsens>1</clipsens>
+				</attr>
+				<children>
+					<obj id="IllLayer" class="IlluminationLayerObject">
+						<attr>
+							<left>0</left>
+							<top>0</top>
+							<width>father.width</width>
+							<height>father.height</height>
+							<zorder>2</zorder>
+						</attr>
+					</obj>
+					<obj id="image" class="ImageObject">
+						<attr>
+							<top>1</top>
+							<left>58</left>
+							<width>13</width>
+							<height>129</height>
+						</attr>
+					</obj>
+					<obj id="rotate" class="RotateObject">
+						<attr>
+							<width>father.width</width>
+							<height>father.height</height>
+							<centerx>64</centerx>
+							<centery>64</centery>
+							<rotatemode>antialias</rotatemode>
+							<zorder>1</zorder>
+						</attr>
+					</obj>
+				</children>
+			</obj>
+		</children>
+		<eventlist>
+             <event name="OnInitControl">
+				local arg = {...}
+				local self = arg[1]
+				local rotateObj = self:GetObject("rotate")
+				
+				local attr = self:GetAttribute();
+				rotateObj:SetAngel(attr.Angel)
+				
+				local imageObj = self:GetObject("image")
+				imageObj:SetResID(attr.Image)
+				
+				local illLayerObj = self:GetObject("IllLayer")
+				illLayerObj:SetLayerHeight(attr.LayerHeight)
+				
+			 </event>
+        </eventlist>
+	</objtemplate>
+</control>
+	
+<objtreetemplate id="HelloBolt.Tree" class="ObjectTreeTemplate">
+	<attr>
+			<left>-200</left>
+			<top>-200</top>
+			<width>2000</width>
+			<height>2000</height>
+	</attr>
+	<obj id="IllSession" class="IlluminationSessionObject">
+		<attr>
+			<left>0</left>
+			<top>0</top>
+			<width>130</width>
+			<height>130</height>
+			<ZorderHeightRate>10</ZorderHeightRate>
+		</attr>
+		<children>
+			<obj id="Illuminant1" class="IlluminantObject">
+				<attr>
+					<DirectionX>0</DirectionX>
+					<DirectionY>0</DirectionY>
+					<Color>255,255,255,125</Color>
+				</attr>
+			</obj>
+			<obj id="Illuminant2" class="IlluminantObject">
+				<attr>
+					<DirectionX>1</DirectionX>
+					<DirectionY>1</DirectionY>
+					<Color>255,255,255,125</Color>
+				</attr>
+			</obj>
+			<obj id="caption" class="CaptionObject">
+				<attr>
+					<width>father.width</width>
+					<height>father.height</height>
+					<zorder>-1000</zorder>
+				</attr>
+			</obj>
+			<obj id="BkgLayer" class="LayerObject">
+				<attr>
+					<left>0</left>
+					<top>0</top>
+					<width>father.width</width>
+					<height>father.height</height>
+					<clipsens>1</clipsens>
+				</attr>
+				<children>
+					<obj id="BkgIllLayer" class="IlluminationLayerObject">
+						<attr>
+							<left>0</left>
+							<top>0</top>
+							<width>father.width</width>
+							<height>father.height</height>
+							<zorder>1</zorder>
+							<LayerHeight>0</LayerHeight>
+						</attr>
+					</obj>
+					<obj id="clock" class="ImageObject">
+						<attr>
+							<left>0</left>
+							<top>0</top>
+							<width>father.width</width>
+							<height>father.height</height>
+							<image>clock</image>
+						</attr>
+					</obj>
+					<obj class="ImageObject">
+						<attr>
+							<top>-1</top>
+							<left>58</left>
+							<width>13</width>
+							<height>129</height>
+							<image>clock_dot</image>
+							<zorder>4</zorder>
+							<halign>center</halign>
+						</attr>
+					</obj>	
+				</children>
+			</obj>
+			<obj id="h" class="ClockHands">
+				<attr>
+					<width>father.width</width>
+					<height>129</height>
+					<Angel>0</Angel>
+					<Image>clock_h</Image>
+					<zorder>1</zorder>
+					<LayerHeight>1</LayerHeight>
+				</attr>
+			</obj>
+			<obj id="m" class="ClockHands">
+				<attr>
+					<width>father.width</width>
+					<height>129</height>
+					<Angel>0</Angel>
+					<Image>clock_m</Image>
+					<zorder>2</zorder>
+					<LayerHeight>2</LayerHeight>
+				</attr>
+			</obj>
+			<obj id="s" class="ClockHands">
+				<attr>
+					<width>father.width</width>
+					<height>129</height>
+					<Angel>0</Angel>
+					<Image>clock_s</Image>
+					<zorder>3</zorder>
+					<LayerHeight>3</LayerHeight>
+				</attr>
+			</obj>
+		</children>
+		<eventlist>
+			<event name="OnInitControl">
+				local arg = {...}
+				local self = arg[1]
+				local hObj = self:GetObject("h")
+				local mObj = self:GetObject("m")
+				local sObj = self:GetObject("s")
+				local sessionObj = self
+				local function OnTimer()
+					local h = os.date("%I")
+					local m = os.date("%M")
+					hObj:SetAngel(h * 360 /12 + m * 30 /60)
+					
+					mObj:SetAngel(m * 360 /60)
+					
+					local s = os.date("%S")
+					sObj:SetAngel(s * 360 /60)
+					
+					sessionObj:InvalidSession()
+				end
+				
+				OnTimer()
+				SetTimer(OnTimer, 1000)
+			</event>
+		</eventlist>
+	</obj>	
+</objtreetemplate>
+	
+<hostwndtemplate id="HelloBolt.Wnd" class="FrameHostWnd">
+		<attr> 
+			<title>Bolt</title>
+			<layered>1</layered>
+			<left>200</left> 
+			<top>100</top>
+			<width>130</width>
+			<height>130</height>
+			<topmost>0</topmost>
+			<visible>1</visible>
+			<enable>1</enable>
+			<maxbox>0</maxbox>
+			<minbox>0</minbox>
+			<minwidth>100</minwidth>
+			<minheight>72</minheight>
+			<maxwidth>1000</maxwidth>
+			<maxheight>720</maxheight>
+			<appwindow>1</appwindow>
+			<fps>30</fps>
+		</attr>
+		<eventlist>
+			<event name="OnSize" file="MainWnd.xml.lua" func="OnSize"/>
+			<event name="OnClose" file="MainWnd.xml.lua" func="OnClose"/>
+		</eventlist>
+</hostwndtemplate>
+</xlue>
